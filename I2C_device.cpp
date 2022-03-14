@@ -1,11 +1,10 @@
 #include "I2C_device.h"
 #include <Arduino.h>
-#include <stdlib.h>
 
 //Constructor for I2C Device
-I2CDevice::I2CDevice(byte address, int port_no = 0, int frequency = 400000){
+I2CDevice::I2CDevice(byte address, unsigned int port_no = 0, unsigned int frequency = 400000){
     
-    setupDevice(address,port_no);
+    setupDevice(address,port_no,frequency);
     while (!checkConnection()){
         Serial.println(" error getting Data! Check the address, port number and wiring ");
         delay(1000);
@@ -13,26 +12,28 @@ I2CDevice::I2CDevice(byte address, int port_no = 0, int frequency = 400000){
 }
 
 //setting up device address_ and i2c port
-void I2CDevice::setupDevice(byte address, int port_no, int frequency ){
+void I2CDevice::setupDevice(byte address, unsigned int port_no, unsigned int frequency ){
 
     address_ = address;
-    switch (port_no){
+    port_no_ = port_no;
+    switch (port_no_){
 
     case 0:
-        wire_ = Wire;
+        Wire.begin();
+        Wire.setClock(frequency);
         break;
     case 1:
-        wire_ = Wire1;
+        Wire1.begin();
+        Wire1.setClock(frequency);
         break;
     case 2:
-        wire_ = Wire2;
+        Wire2.begin();
+        Wire2.setClock(frequency);
         break;
     default:
-       Serial.println("Wrong port selected! Teensy has only 3 ports.");
+       Serial.println("Invalid Port! Teensy has only 3 ports.");
         break;
     }
-    wire_.begin();
-    wire_.setClock(frequency);
     return;
 }
 
@@ -41,10 +42,28 @@ void I2CDevice::setupDevice(byte address, int port_no, int frequency ){
 bool I2CDevice::checkConnection(){
 
     byte error = 0;
-
-    wire_.begin();
-    wire_.beginTransmission(address_);
-    error = wire_.endTransmission();
+    switch (port_no_)
+    {
+    case 0:
+        Wire.begin();
+        Wire.beginTransmission(address_);
+        error = Wire.endTransmission();
+        break;
+    case 1:
+        Wire1.begin();
+        Wire1.beginTransmission(address_);
+        error = Wire1.endTransmission();
+        break;
+    case 2:
+        Wire2.begin();
+        Wire2.beginTransmission(address_);
+        error = Wire2.endTransmission();
+        break;
+    default:
+        Serial.println("Invalid Port! Teensy has only 3 ports.");
+        break;
+    }
+   
         
     
     return (error == 0) ? true : false;
@@ -52,29 +71,62 @@ bool I2CDevice::checkConnection(){
 
 
 //Reads bytes and updates in provided location
-int I2CDevice::readBytesFromReg (byte regadd, int count,  byte* const values)
+void I2CDevice::readBytesFromReg (byte regadd, unsigned int count,  byte* const values)
 {
-    
-    wire_.beginTransmission(address_);
-    wire_.write(regadd);
-    while (wire_.endTransmission(false)){
-
-        Serial.println("error reading from device, retrying ....");
-        delay(1000);
-    }
-         
-    count = wire_.requestFrom(address_,count);
-    for (int i = 0; i < count; i++)
+    switch (port_no_)
     {
-        values[i] = wire_.read();
+    case 0:
+        Wire.beginTransmission(address_);
+        Wire.write(regadd);
+        Wire.endTransmission(false);
+        count = Wire.requestFrom(address_,count);
+        for (int i = 0; i < count; i++)
+        {
+            values[i] = Wire.read();
+        }
+        break;    
+
+    case 1:
+        Wire1.beginTransmission(address_);
+        Wire1.write(regadd);
+        Wire1.endTransmission(false);
+        count = Wire1.requestFrom(address_,count);
+        for (int i = 0; i < count; i++)
+        {
+            values[i] = Wire1.read();
+        }
+        break;     
+ 
+
+    case 2:
+        Wire2.beginTransmission(address_);
+        Wire2.write(regadd);
+        Wire2.endTransmission(false);
+        count = Wire2.requestFrom(address_,count);
+        for (int i = 0; i < count; i++)
+        {
+            values[i] = Wire2.read();
+        }
+        break;     
+        
+    default:
+        Serial.println("Invalid Port. Teensy has only 3 ports");
+        break;
     }
-    return;
+    
+    
+    return;    
 }
+        
+       
+
+    
+
 
 //Returns a byte read from given register
 byte I2CDevice::readByteFromReg(byte regadd)
 {
-  byte Byte;
+    byte Byte;
     readBytesFromReg(regadd,1,&Byte);
     return Byte;
 }
@@ -90,7 +142,7 @@ byte I2CDevice::readBitsFromReg(byte regadd,byte bitmask)
 }
 
  //Reads an array of short ints from a reg location 
- void I2CDevice::readShortIntsFromReg( byte regadd,int count,short int* values)
+ void I2CDevice::readShortIntsFromReg( byte regadd,unsigned int count,short int* values)
 {
    byte Bytes[2*count];
    readBytesFromReg(regadd,2*count,Bytes);
@@ -116,34 +168,58 @@ byte I2CDevice::readBitsFromReg(byte regadd,byte bitmask)
 
 
 // write an array of bytes to a register location
-int I2CDevice::writeBytesToReg(byte regadd,int count,byte* values)
+void I2CDevice::writeBytesToReg(byte regadd, unsigned int count,byte* values)
 {
-
-    wire_.begin();
-    wire_.beginTransmission(this->address_);
-    wire_.write(regadd);
-    for (int i = 0;i < count; i++)
+    switch (port_no_)
     {
-        wire_.write(values[i]);
-    }
-    return wire_.endTransmission(true);
+    case 0:
+        Wire.beginTransmission(address_);
+        Wire.write(regadd);
+        for (int i = 0;i < count; i++){
+            Wire.write(values[i]);
+        }
+        Wire.endTransmission(true);
+        break;
+
+    case 1:
+        Wire1.beginTransmission(address_);
+        Wire1.write(regadd);
+        for (int i = 0;i < count; i++){
+            Wire1.write(values[i]);
+        }
+        Wire1.endTransmission(true);
+        break;
+
+    case 2:
+        Wire2.beginTransmission(address_);
+        Wire2.write(regadd);
+        for (int i = 0;i < count; i++){
+            Wire2.write(values[i]);
+        }
+        Wire2.endTransmission(true);
+        break;
     
+    default:
+        break;
+    }
+
+       
 
 } 
 
 // write a byte to a register 
-int I2CDevice::writeByteToReg(byte regadd,byte  value)
+void I2CDevice::writeByteToReg(byte regadd,byte  value)
 {
-
-    return writeBytesToReg(regadd,1,&value);
+    writeBytesToReg(regadd,1,&value);
+    return;
 } 
 
 
 
 //write bits to a register
-int I2CDevice::writeBitsToReg(byte regadd,byte bitmask,byte value)
+void I2CDevice::writeBitsToReg(byte regadd,byte bitmask,byte value)
 {
     value = ((readByteFromReg(regadd) & (~bitmask)) | (value & bitmask));
-    
-    return writeByteToReg(regadd,value);
+    writeByteToReg(regadd,value);
+    return;
 }
