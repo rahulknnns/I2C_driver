@@ -2,9 +2,9 @@
 #include <Arduino.h>
 
 //Constructor for I2C Device
-I2CDevice::I2CDevice(byte address, unsigned int port_no = 0, unsigned int frequency = 400000){
+I2CDevice::I2CDevice(byte address, unsigned int port_no = 0){
     
-    setupDevice(address,port_no,frequency);
+    setupDevice(address,port_no);
     while (!checkConnection()){
         Serial.println(" error getting Data! Check the address, port number and wiring ");
         delay(1000);
@@ -12,28 +12,10 @@ I2CDevice::I2CDevice(byte address, unsigned int port_no = 0, unsigned int freque
 }
 
 //setting up device address_ and i2c port
-void I2CDevice::setupDevice(byte address, unsigned int port_no, unsigned int frequency ){
+void I2CDevice::setupDevice(byte address, unsigned int port_no){
 
     address_ = address;
     port_no_ = port_no;
-    switch (port_no_){
-
-    case 0:
-        Wire.begin();
-        Wire.setClock(frequency);
-        break;
-    case 1:
-        Wire1.begin();
-        Wire1.setClock(frequency);
-        break;
-    case 2:
-        Wire2.begin();
-        Wire2.setClock(frequency);
-        break;
-    default:
-       Serial.println("Invalid Port! Teensy has only 3 ports.");
-        break;
-    }
     return;
 }
 

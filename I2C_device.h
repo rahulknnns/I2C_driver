@@ -12,7 +12,7 @@
     public:
     //Initializer Functions
         I2CDevice() =default;
-        I2CDevice(byte address,unsigned int port_no = 0, unsigned int frequency = 400000);
+        I2CDevice(byte address,unsigned int port_no = 0);
         
         
         //read Functions
@@ -28,7 +28,7 @@
         void  writeBitsToReg(byte regadd, byte bitmask,byte value);
 
     protected:
-        void setupDevice(byte address,unsigned int port_no, unsigned int frequency );
+        void setupDevice(byte address,unsigned int port_no );
         bool checkConnection();
 
 };
