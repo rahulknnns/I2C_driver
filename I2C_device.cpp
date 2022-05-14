@@ -5,7 +5,7 @@
 I2CDevice::I2CDevice(byte address, unsigned int port_no = 0){
     
     setupDevice(address,port_no);
-    while (!checkConnection()){
+    if(!checkConnection()){
         Serial.println(" error getting Data! Check the address, port number and wiring ");
         delay(1000);
     }
@@ -31,6 +31,7 @@ bool I2CDevice::checkConnection(){
         Wire.beginTransmission(address_);
         error = Wire.endTransmission();
         break;
+    #ifdef TEENSY
     case 1:
         Wire1.begin();
         Wire1.beginTransmission(address_);
@@ -41,9 +42,11 @@ bool I2CDevice::checkConnection(){
         Wire2.beginTransmission(address_);
         error = Wire2.endTransmission();
         break;
+  
     default:
         Serial.println("Invalid Port! Teensy has only 3 ports.");
         break;
+    #endif
     }
    
         
@@ -67,7 +70,7 @@ void I2CDevice::readBytesFromReg (byte regadd, unsigned int count,  byte* const 
             values[i] = Wire.read();
         }
         break;    
-
+    #ifdef TEENSY
     case 1:
         Wire1.beginTransmission(address_);
         Wire1.write(regadd);
@@ -89,11 +92,13 @@ void I2CDevice::readBytesFromReg (byte regadd, unsigned int count,  byte* const 
         {
             values[i] = Wire2.read();
         }
-        break;     
+        break; 
+        
         
     default:
         Serial.println("Invalid Port. Teensy has only 3 ports");
         break;
+    #endif
     }
     
     
@@ -162,7 +167,7 @@ void I2CDevice::writeBytesToReg(byte regadd, unsigned int count,byte* values)
         }
         Wire.endTransmission(true);
         break;
-
+    #ifdef TEENSY
     case 1:
         Wire1.beginTransmission(address_);
         Wire1.write(regadd);
@@ -183,6 +188,7 @@ void I2CDevice::writeBytesToReg(byte regadd, unsigned int count,byte* values)
     
     default:
         break;
+    #endif
     }
 
        
