@@ -1,10 +1,10 @@
 #include "I2C_device.h"
 #include <Arduino.h>
-
+TwoWire* wireObj;
 //Constructor for I2C Device
-I2CDevice::I2CDevice(byte address, unsigned int port_no = 0){
+I2CDevice::I2CDevice(byte address, TwoWire* preferred_wire = &Wire){
     
-    setupDevice(address,port_no);
+    setupDevice(address,preferred_wire);
     if(!checkConnection()){
         Serial.println(" error getting Data! Check the address, port number and wiring ");
         delay(1000);
@@ -12,10 +12,10 @@ I2CDevice::I2CDevice(byte address, unsigned int port_no = 0){
 }
 
 //setting up device address_ and i2c port
-void I2CDevice::setupDevice(byte address, unsigned int port_no){
+void I2CDevice::setupDevice(byte address, TwoWire* preferred_wire){
 
     address_ = address;
-    port_no_ = port_no;
+    wireObj  = preferred_wire;
     return;
 }
 
@@ -24,33 +24,8 @@ void I2CDevice::setupDevice(byte address, unsigned int port_no){
 bool I2CDevice::checkConnection(){
 
     byte error = 0;
-    switch (port_no_)
-    {
-    case 0:
-        Wire.begin();
-        Wire.beginTransmission(address_);
-        error = Wire.endTransmission();
-        break;
-    #ifdef TEENSY
-    case 1:
-        Wire1.begin();
-        Wire1.beginTransmission(address_);
-        error = Wire1.endTransmission();
-        break;
-    case 2:
-        Wire2.begin();
-        Wire2.beginTransmission(address_);
-        error = Wire2.endTransmission();
-        break;
-  
-    default:
-        Serial.println("Invalid Port! Teensy has only 3 ports.");
-        break;
-    #endif
-    }
-   
-        
-    
+    wireObj->beginTransmission(address_);
+    error = wireObj->endTransmission();
     return (error == 0) ? true : false;
 } 
 
@@ -58,55 +33,17 @@ bool I2CDevice::checkConnection(){
 //Reads bytes and updates in provided location
 void I2CDevice::readBytesFromReg (byte regadd, unsigned int count,  byte* const values)
 {
-    switch (port_no_)
+   wireObj.beginTransmission(address_);
+   wireObj.write(regadd);
+   wireObj.endTransmission(false);
+   wireObj.requestFrom(address_,count,true);
+   for (int i = 0; i < count; i++)
     {
-    case 0:
-        Wire.beginTransmission(address_);
-        Wire.write(regadd);
-        Wire.endTransmission(false);
-        count = Wire.requestFrom(address_,count);
-        for (int i = 0; i < count; i++)
-        {
-            values[i] = Wire.read();
-        }
-        break;    
-    #ifdef TEENSY
-    case 1:
-        Wire1.beginTransmission(address_);
-        Wire1.write(regadd);
-        Wire1.endTransmission(false);
-        count = Wire1.requestFrom(address_,count);
-        for (int i = 0; i < count; i++)
-        {
-            values[i] = Wire1.read();
-        }
-        break;     
- 
-
-    case 2:
-        Wire2.beginTransmission(address_);
-        Wire2.write(regadd);
-        Wire2.endTransmission(false);
-        count = Wire2.requestFrom(address_,count);
-        for (int i = 0; i < count; i++)
-        {
-            values[i] = Wire2.read();
-        }
-        break; 
-        
-        
-    default:
-        Serial.println("Invalid Port. Teensy has only 3 ports");
-        break;
-    #endif
+        values[i] = wireObj.read();
     }
-    
-    
-    return;    
-}
+    break;
         
-       
-
+}
     
 
 
@@ -157,40 +94,13 @@ byte I2CDevice::readBitsFromReg(byte regadd,byte bitmask)
 // write an array of bytes to a register location
 void I2CDevice::writeBytesToReg(byte regadd, unsigned int count,byte* values)
 {
-    switch (port_no_)
-    {
-    case 0:
-        Wire.beginTransmission(address_);
-        Wire.write(regadd);
-        for (int i = 0;i < count; i++){
-            Wire.write(values[i]);
-        }
-        Wire.endTransmission(true);
-        break;
-    #ifdef TEENSY
-    case 1:
-        Wire1.beginTransmission(address_);
-        Wire1.write(regadd);
-        for (int i = 0;i < count; i++){
-            Wire1.write(values[i]);
-        }
-        Wire1.endTransmission(true);
-        break;
-
-    case 2:
-        Wire2.beginTransmission(address_);
-        Wire2.write(regadd);
-        for (int i = 0;i < count; i++){
-            Wire2.write(values[i]);
-        }
-        Wire2.endTransmission(true);
-        break;
-    
-    default:
-        break;
-    #endif
+    wireObj.beginTransmission(address_);
+    wireObj.write(regadd);
+    for (int i = 0;i < count; i++){
+        wireObj.write(values[i]);
     }
-
+    wireObj.endTransmission(true);
+    break;
        
 
 } 

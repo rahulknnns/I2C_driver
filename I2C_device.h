@@ -6,13 +6,12 @@
  class I2CDevice 
 {
     protected:
-        byte address_;
-        unsigned int port_no_;
+        byte address_; 
    
     public:
     //Initializer Functions
         I2CDevice() =default;
-        I2CDevice(byte address,unsigned int port_no = 0);
+        I2CDevice(byte address, TwoWire* preferred_wire = &Wire);
         
         
         //read Functions
