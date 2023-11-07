@@ -7,6 +7,7 @@
 {
     protected:
         byte address_; 
+        TwoWire* wire_;
    
     public:
     //Initializer Functions
