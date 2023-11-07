@@ -12,5 +12,5 @@
   * By default &Wire is chosen.
   * It is also expected to initialise the Wire object by calling Wire.begin() seperately in your code as the library doesn't do so.
   * Use the read / write functions provided by the class.
-  *  Detailed API usage can be found [here](link).
+  *  Detailed API usage can be found [here](https://rahulknns.github.io/I2C_driver/).
 
