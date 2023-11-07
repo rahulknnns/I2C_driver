@@ -5,7 +5,7 @@
  * @param address I2C address of the device 0 - 127
  * @param preferred_wire I2C port to use e.g. Wire, Wire1, Wire2
 */
-I2CDevice::I2CDevice(byte address, TwoWire* preferred_wire = &Wire){
+I2CDevice::I2CDevice(byte address, TwoWire* preferred_wire ){
     
     setupDevice(address,preferred_wire);
     if(!checkConnection()){
