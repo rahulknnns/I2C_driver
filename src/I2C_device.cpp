@@ -140,9 +140,7 @@ void I2CDevice::writeBytesToReg(byte regadd, unsigned int count,byte* values)
     for (int i = 0;i < count; i++){
         wire_->write(values[i]);
     }
-    wire_->endTransmission(true);
-    break;
-       
+    wire_->endTransmission(true);       
 
 } 
 
