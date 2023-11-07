@@ -28,7 +28,7 @@
         void  writeBitsToReg(byte regadd, byte bitmask,byte value);
 
     protected:
-        void setupDevice(byte address,unsigned int port_no );
+        void setupDevice(byte address,TwoWire* wire );
         bool checkConnection();
 
 };
