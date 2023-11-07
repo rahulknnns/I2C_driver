@@ -57,9 +57,7 @@ void I2CDevice::readBytesFromReg (byte regadd, unsigned int count,  byte* const 
    for (int i = 0; i < count; i++)
     {
         values[i] = wire_->read();
-    }
-    break;
-        
+    }        
 }
     
 
@@ -98,7 +96,7 @@ byte I2CDevice::readBitsFromReg(byte regadd,byte bitmask)
  * @param values pointer to the array of short ints to store the read values
  * @param msb_first true if the most significant byte is first in the register
 */
-void I2CDevice::readShortIntsFromReg( byte regadd,unsigned int count,short int* values,bool msb_first = true)
+void I2CDevice::readShortIntsFromReg( byte regadd,unsigned int count,short int* values,bool msb_first)
 {
    byte Bytes[2*count];
    readBytesFromReg(regadd,2*count,Bytes);
@@ -118,10 +116,10 @@ void I2CDevice::readShortIntsFromReg( byte regadd,unsigned int count,short int* 
  * @param regadd register address
  * @return short int read from the register
 */
-short int I2CDevice::readShortIntFromReg( byte regadd)
+short int I2CDevice::readShortIntFromReg( byte regadd,bool msb_first)
 {
     short int short_int;
-    readShortIntsFromReg(regadd,1,&short_int);
+    readShortIntsFromReg(regadd,1,&short_int,msb_first);
 
     return short_int;
 } 

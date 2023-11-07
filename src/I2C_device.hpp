@@ -19,8 +19,8 @@
         void readBytesFromReg (byte regadd, unsigned int count, byte* values);
         byte readByteFromReg (byte regadd);
         byte readBitsFromReg(byte regadd,byte bitmask);
-        void readShortIntsFromReg (byte regadd, unsigned int count, short int* values);
-        short int  readShortIntFromReg (byte regadd);
+        void readShortIntsFromReg (byte regadd, unsigned int count, short int* values,bool msb_first = true);
+        short int  readShortIntFromReg (byte regadd,bool msb_first = true);
         
         //write Functions
         void  writeBytesToReg(byte regadd,unsigned int count,byte* value);
