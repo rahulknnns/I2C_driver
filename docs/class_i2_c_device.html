@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>I2C Driver: I2CDevice Class Reference</title>
+<title>I2C driver: I2CDevice Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">I2C Driver
+   <div id="projectname">I2C driver
    </div>
   </td>
  </tr>
@@ -80,9 +80,13 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abf3f89d72868d7f8e04c0d29990cc2bb" id="r_abf3f89d72868d7f8e04c0d29990cc2bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_device.html#abf3f89d72868d7f8e04c0d29990cc2bb">I2CDevice</a> (byte address, TwoWire *preferred_wire=&amp;Wire)</td></tr>
-<tr class="memdesc:abf3f89d72868d7f8e04c0d29990cc2bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new I2CDevice::I2CDevice object.  <br /></td></tr>
-<tr class="separator:abf3f89d72868d7f8e04c0d29990cc2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa6d28cbaab65cfc2ad60a63bc95d30d" id="r_afa6d28cbaab65cfc2ad60a63bc95d30d"><td class="memItemLeft" align="right" valign="top"><a id="afa6d28cbaab65cfc2ad60a63bc95d30d" name="afa6d28cbaab65cfc2ad60a63bc95d30d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>I2CDevice</b> ()</td></tr>
+<tr class="memdesc:afa6d28cbaab65cfc2ad60a63bc95d30d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="class_i2_c_device.html#afa6d28cbaab65cfc2ad60a63bc95d30d" title="Construct a new I2CDevice::I2CDevice object.">I2CDevice::I2CDevice</a> object. <br /></td></tr>
+<tr class="separator:afa6d28cbaab65cfc2ad60a63bc95d30d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50af30e65cc9380d3a726924eaa911ce" id="r_a50af30e65cc9380d3a726924eaa911ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_device.html#a50af30e65cc9380d3a726924eaa911ce">begin</a> (byte address, TwoWire *preferred_wire=&amp;Wire)</td></tr>
+<tr class="memdesc:a50af30e65cc9380d3a726924eaa911ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialise I2C object, Must be called before any other functions and must be called after Wire.begin and Serial.begin calls  <br /></td></tr>
+<tr class="separator:a50af30e65cc9380d3a726924eaa911ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf00319ff3c03916c79498bf25add61f" id="r_adf00319ff3c03916c79498bf25add61f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_i2_c_device.html#adf00319ff3c03916c79498bf25add61f">readBytesFromReg</a> (byte regadd, unsigned int count, byte *values)</td></tr>
 <tr class="memdesc:adf00319ff3c03916c79498bf25add61f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read bytes from a register location.  <br /></td></tr>
 <tr class="separator:adf00319ff3c03916c79498bf25add61f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,15 +130,15 @@ byte&#160;</td><td class="memItemRight" valign="bottom"><b>address_</b></td></tr
 TwoWire *&#160;</td><td class="memItemRight" valign="bottom"><b>wire_</b></td></tr>
 <tr class="separator:a9c4280dc1c6870d3fbfad58ec6190a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abf3f89d72868d7f8e04c0d29990cc2bb" name="abf3f89d72868d7f8e04c0d29990cc2bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf3f89d72868d7f8e04c0d29990cc2bb">&#9670;&#160;</a></span>I2CDevice()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a50af30e65cc9380d3a726924eaa911ce" name="a50af30e65cc9380d3a726924eaa911ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50af30e65cc9380d3a726924eaa911ce">&#9670;&#160;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">I2CDevice::I2CDevice </td>
+          <td class="memname">void I2CDevice::begin </td>
           <td>(</td>
           <td class="paramtype">byte&#160;</td>
           <td class="paramname"><em>address</em>, </td>
@@ -153,7 +157,7 @@ TwoWire *&#160;</td><td class="memItemRight" valign="bottom"><b>wire_</b></td></
       </table>
 </div><div class="memdoc">
 
-<p>Construct a new I2CDevice::I2CDevice object. </p>
+<p>initialise I2C object, Must be called before any other functions and must be called after Wire.begin and Serial.begin calls </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">address</td><td>I2C address of the device 0 - 127 </td></tr>
@@ -164,7 +168,6 @@ TwoWire *&#160;</td><td class="memItemRight" valign="bottom"><b>wire_</b></td></
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a1123153bb88faea5d7d0e2500047012f" name="a1123153bb88faea5d7d0e2500047012f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1123153bb88faea5d7d0e2500047012f">&#9670;&#160;</a></span>checkConnection()</h2>
 
