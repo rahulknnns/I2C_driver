@@ -11,9 +11,8 @@
    
     public:
     //Initializer Functions
-        I2CDevice() =default;
-        I2CDevice(byte address, TwoWire* preferred_wire = &Wire);
-        void begin();
+        I2CDevice();
+        void begin(byte address, TwoWire* preferred_wire = &Wire);
         
         
         //read Functions

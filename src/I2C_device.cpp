@@ -2,13 +2,8 @@
 
 /**
  * @brief Construct a new I2CDevice::I2CDevice object
- * @param address I2C address of the device 0 - 127
- * @param preferred_wire I2C port to use e.g. Wire, Wire1, Wire2
 */
-I2CDevice::I2CDevice(byte address, TwoWire* preferred_wire ){
-    
-    setupDevice(address,preferred_wire);
-    
+I2CDevice::I2CDevice( ){
 }
 
 /**
@@ -38,8 +33,15 @@ bool I2CDevice::checkConnection(){
     return (error == 0) ? true : false;
 } 
 
-void I2CDevice::begin(){
-    if(!checkConnection()){
+
+/**
+ * @brief initialise I2C object, Must be called before any other functions and must be called after Wire.begin and Serial.begin calls
+ * @param address I2C address of the device 0 - 127
+ * @param preferred_wire I2C port to use e.g. Wire, Wire1, Wire2
+*/
+void I2CDevice::begin(byte address, TwoWire* preferred_wire){
+    setupDevice(address,preferred_wire);
+    while(!checkConnection()){
         Serial.println(" error getting Data! Check the address, port number and wiring ");
         Serial.println(" I2C address: " + String(address));
         delay(1000);
