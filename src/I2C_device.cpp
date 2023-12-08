@@ -8,11 +8,7 @@
 I2CDevice::I2CDevice(byte address, TwoWire* preferred_wire ){
     
     setupDevice(address,preferred_wire);
-    if(!checkConnection()){
-        Serial.println(" error getting Data! Check the address, port number and wiring ");
-        Serial.println(" I2C address: " + String(address));
-        delay(1000);
-    }
+    
 }
 
 /**
@@ -42,6 +38,13 @@ bool I2CDevice::checkConnection(){
     return (error == 0) ? true : false;
 } 
 
+void I2CDevice::begin(){
+    if(!checkConnection()){
+        Serial.println(" error getting Data! Check the address, port number and wiring ");
+        Serial.println(" I2C address: " + String(address));
+        delay(1000);
+    }
+}
 /**
  * @brief Read bytes from a register location
  * @param regadd register address
